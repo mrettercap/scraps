@@ -1,14 +1,14 @@
 #!/bin/bash 
 
 ########################################
-#				       							# 
+#                                      # 
 #   ROLL.SH // Dice Roll Script.       #
 #   --------------------------------   #
 #   For DMs. Part of dm-tools suite.   #
 #        by Benjamin M. Ford           #
-#   				       						#
-#   + Jun 2013			       				#
-#				     							   #
+#                                      #
+#   + Jun 2013                         #
+#                                      #
 ########################################
 
 # Syntax: roll [options] {die modifier} {sides to die}  
