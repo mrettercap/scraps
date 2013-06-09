@@ -44,10 +44,10 @@ branch_git() {
    # Set the branchname; if it's not a git dir, redirect errors to null
    branchname=$( git rev-parse --abbrev-ref HEAD 2> /dev/null )
    # Print branchname assuming the last command worked.
-   [ $? -eq 0 ] && echo "[$branchname]"
+   [ $? -eq 0 ] && echo "$branchname"
 }
 
 # Export it.
-export PS1="\n┌\$(prefix_git) \e[38;05;208m\u@\h \$(dircol_git)\w$creset \e[38;05;66m\$(branch_git)\e[00m
+export PS1="\n┌\$(prefix_git) \e[38;05;208m\u@\h \$(dircol_git)\w$creset [\e[38;05;66m\$(branch_git)\e[00m]
 └ \$ "
 
