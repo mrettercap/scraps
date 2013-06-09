@@ -1,11 +1,11 @@
+# Make for pretty colours
 export TERM=xterm-256color
 
 # Colors
-
-# Reset
+## Reset
 creset="\e[0m"       # Text Reset
 
-# Regular Colors
+## Regular Colors
 black="\e[0;30m"        # Black
 red="\e[0;31m"          # Red
 green="\e[0;32m"        # Green
@@ -14,6 +14,17 @@ blue="\e[0;34m"         # Blue
 purple="\e[0;35m"       # Purple
 cyan="\e[0;36m"         # Cyan
 white="\e[0;37m"        # White
+
+
+# User-settable variables
+## Git prompt
+GIT_PROMPT_PREFIX="$blue"
+GIT_PROMPT="┅"
+GIT_PROMPT_SUFFIX="$creset"
+
+## Directory
+GIT_DIR_PREFIX="$blue"
+GIT_DIR_SUFFIX="$creset"
 
 # Git-related tasks
 prefix_git() {
@@ -24,25 +35,19 @@ prefix_git() {
 dircol_git() {
    # Check the status of the dir. If it doesn't exist, we'll get an error.
    git status -s &> /dev/null
-   [ $? -gt 0 ] && echo -e "$purple" || echo -e "$blue"
+
+   # Assuming the last command (ie. checking status) wasn't an error (ie. it's a git dir), color output.
+   [ $? -eq 0 ] && echo -e "$blue" || echo -e "$purple"
 }
 
+branch_git() {
+   # Set the branchname; if it's not a git dir, redirect errors to null
+   branchname=$( git rev-parse --abbrev-ref HEAD 2> /dev/null )
+   # Print branchname assuming the last command worked.
+   [ $? -eq 0 ] && echo "[$branchname]"
+}
 
-#╭─ [color=magenta]dir[/color]
-#╰ $ echo blah
-
-
-# When we're in a git dir without changes:
-
-#╭─ [color=blue]dir[/color]
-#╰ $ echo blah
-
-# When we're in a git dir with changes:
-# nb. the ┅ will be blue
-
-#╭┅ [color=blue]dir[/color]
-#╰ $ echo blah
-
-export PS1="\n╭\$(prefix_git) \u@\h \$(dircol_git)\w$creset
-╰ \$ "
+# Export it.
+export PS1="\n┌\$(prefix_git) \e[38;05;208m\u@\h \$(dircol_git)\w$creset \e[38;05;66m\$(branch_git)\e[00m
+└ \$ "
 
