@@ -15,16 +15,17 @@ purple="\e[0;35m"       # Purple
 cyan="\e[0;36m"         # Cyan
 white="\e[0;37m"        # White
 
+# Let's check if the directory is a git dir.
+isgit=$(git status -s 2> /dev/null)
+
 # Git-related tasks
 dirchk_git() {
-# About to add git check
-   local status=$(git status -s)   
-   [[ -n $status ]] && echo -e "$blue┅$creset" || echo -e "─"
+   # Check status of cwd to see if it's 
+   [[ -n $isgit ]] && echo -e "$blue┅$creset" || echo -e "─"
 }
 
 dircol_git() {
-   git branch >/dev/null 2>/dev/null && echo -e "$blue" && return
-   echo -e "$purple"
+   [[ -n $isgit ]] && echo -e "$blue" || echo -e "$purple"
 }
 
 
