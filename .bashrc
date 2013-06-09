@@ -15,22 +15,16 @@ purple="\e[0;35m"       # Purple
 cyan="\e[0;36m"         # Cyan
 white="\e[0;37m"        # White
 
-# Let's check if the directory is a git dir.
-dirchk_git() {
-   # The following command will produce NULL to stdout and an error on stderr if 
-   # the cwd is not a git dir. We redirect the error because we don't want the clutter
-   # and we know what it means anyway.
-   git status -s 2> /dev/null
-}
-
 # Git-related tasks
 prefix_git() {
-   # Here we're checking if status returns true
-   [[ -n $( dirchk_git ) ]] && echo -e "$blue┅$creset" || echo -e "─"
+   # Here we're checking if the dir is clean.
+   [[ -n $( git status -s 2> /dev/null ) ]] && echo -e "$blue┅$creset" || echo -e "─"
 }
 
 dircol_git() {
-   [[ -n $isgit ]] && echo -e "$blue" || echo -e "$purple"
+   # Check the status of the dir. If it doesn't exist, we'll get an error.
+   git status -s &> /dev/null
+   [ $? -gt 0 ] && echo -e "$purple" || echo -e "$blue"
 }
 
 
