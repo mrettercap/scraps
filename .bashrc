@@ -16,12 +16,17 @@ cyan="\e[0;36m"         # Cyan
 white="\e[0;37m"        # White
 
 # Let's check if the directory is a git dir.
-isgit=$(git status -s 2> /dev/null)
+dirchk_git() {
+   # The following command will produce NULL to stdout and an error on stderr if 
+   # the cwd is not a git dir. We redirect the error because we don't want the clutter
+   # and we know what it means anyway.
+   git status -s 2> /dev/null
+}
 
 # Git-related tasks
-dirchk_git() {
-   # Check status of cwd to see if it's 
-   [[ -n $isgit ]] && echo -e "$blue┅$creset" || echo -e "─"
+prefix_git() {
+   # Here we're checking if status returns true
+   [[ -n $( dirchk_git ) ]] && echo -e "$blue┅$creset" || echo -e "─"
 }
 
 dircol_git() {
@@ -44,7 +49,6 @@ dircol_git() {
 #╭┅ [color=blue]dir[/color]
 #╰ $ echo blah
 
-
-export PS1="\n╭\$(dirchk_git) \u@\h \$(dircol_git)\w$creset
+export PS1="\n╭\$(prefix_git) \u@\h \$(dircol_git)\w$creset
 ╰ \$ "
 
