@@ -18,8 +18,8 @@ white="\e[0;37m"        # White
 # Git-related tasks
 dirchk_git() {
 # About to add git check
-   local status
-   status=$(git status -s)   
+   local status=$(git status -s)   
+   [[ -n $status ]] && echo -e "$blue┅$creset" || echo -e "─"
 }
 
 dircol_git() {
@@ -44,6 +44,6 @@ dircol_git() {
 #╰ $ echo blah
 
 
-export PS1="\n╭─ \u@\h \$(dircol_git)\w$creset
+export PS1="\n╭\$(dirchk_git) \u@\h \$(dircol_git)\w$creset
 ╰ \$ "
 
