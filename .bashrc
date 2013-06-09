@@ -17,7 +17,9 @@ white="\e[0;37m"        # White
 
 # Git-related tasks
 dirchk_git() {
-# ABout to add git check
+# About to add git check
+   local status
+   status=$(git status -s)   
 }
 
 dircol_git() {
