@@ -14,20 +14,6 @@
 # Syntax: roll [options] {die modifier} {sides to die}  
 #     eg: roll -v 3d20 
 
-# Set up color variables
-# Yellow!
-y="\033[0;93m"
-# Purple!
-p="\033[0;95m"
-# Blue!
-b="\033[1;34m"
-# Grey!
-g="\033[0;90m"
-# Underline!
-u="$( tput smul )"
-# Reset!
-n="$( tput sgr0 )"
-
 # How do we use this?
 usage() {
 	 # Embolden and underline this bit!
@@ -41,7 +27,6 @@ usage() {
     echo -e "Options"
 	 tput sgr0 
     echo -e "\t-v\tShow individual results when rolling multiples."
-    echo -e "\t-c\tPrint in color."
     echo -e "\t-h\tGet this help message."
 }
 
@@ -60,26 +45,13 @@ roll() {
 		# We want to make our overall roll the sum of each of the rolls.
 		let ROLL=$[ $ROLL + $rnum ]
 	done
-	
-	# Then we check if the -c flag was set. If not, go with standard output.
-	if [[ -z $color ]]; then
-		intr="* $1d$2:"
-		# .. But make this a little prettier.
-		cont="$( tput smul )$ROLL$( tput sgr0 )."
-		foot="(${ROLLS[*]})"
-	else
-		# Otherwise ...
-		# Oh my, colors everywhere.
-		intr="* ${y}${1}${n}${p}d${2}${n}${b}:${n}"
-		cont="${u}$ROLL${n}${b}.${n}"
-		foot="${g}(${ROLLS[*]})${n}"
-	fi
 
-	# Print the first two parts of the output
-	# eg. * 3d20: 14.
-	echo -ne "$intr $cont"
-	# If the verbose flag was set, show our working.
-	[[ -n $verbose ]] && [[ $1 -gt 1 ]] && echo -ne " $foot"
+	# Print the first bit of the output.
+	echo -ne "* $1d$2:"
+	echo -ne " $( tput smul )$ROLL$( tput sgr0 )."
+
+	# If the verbose flag was set and we're multirolling, show our working.
+	[[ -n $verbose ]] && [[ $1 -gt 1 ]] && echo -ne " (${ROLLS[*]})"
 
 	echo # Newline for prettiness.
 
@@ -104,10 +76,9 @@ check() {
 }
 
 # Check for options
-while getopts "hcv" Option
+while getopts "hv" Option
 do
    case $Option in
-     "c" ) color=1 ;;
      "v" ) verbose=1 ;;
      "h" ) usage && exit 0 ;;
       ?  ) usage && exit 0 ;;
