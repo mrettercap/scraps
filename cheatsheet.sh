@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# TODO: Add ability to search for category but ONLY if search string is set.
+# Add db entries.
 
 UNDERLINE=$( tput smul )
 BOLD=$( tput bold )
@@ -42,7 +44,7 @@ usage() {
    echo "WIP"
 }
 
-while getopts "hs:c:" Option
+while getopts ":sc:h:c:" Option
 do
    case $Option in
       "s" ) search "$OPTARG" ;;
